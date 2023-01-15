@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/miekg/dns"
 )
@@ -67,10 +66,10 @@ func main() {
 	ConfigJson = ReadConfigfile("config.conf")
 
 	// start server
-	port := ConfigJson["Port"].(int)
+	port := ConfigJson["Port"].(string)
 	protocol := ConfigJson["Protocol"].(string)
-	server := &dns.Server{Addr: ":" + strconv.Itoa(port), Net: protocol}
-	log.Printf("Starting at %d\n", port)
+	server := &dns.Server{Addr: ":" + port, Net: protocol}
+	log.Printf("Starting at %s\n", port)
 	err := server.ListenAndServe()
 	defer server.Shutdown()
 	if err != nil {
