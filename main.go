@@ -1,11 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"os"
 
 	"github.com/miekg/dns"
 )
@@ -31,21 +28,6 @@ func parseQuery(m *dns.Msg) {
 	}
 }
 
-func ReadConfigfile(ConfigName string) map[string]interface{} {
-	var configJson map[string]interface{}
-	configfile, err := os.Open(ConfigName)
-
-	if err != nil {
-		log.Println(err)
-	}
-	jsonResult, err := io.ReadAll(configfile)
-	defer configfile.Close()
-	err = json.Unmarshal([]byte(jsonResult), &configJson)
-	if err != nil {
-		log.Println(err)
-	}
-	return configJson
-}
 func handleDnsRequest(w dns.ResponseWriter, r *dns.Msg) {
 	m := new(dns.Msg)
 	m.SetReply(r)
